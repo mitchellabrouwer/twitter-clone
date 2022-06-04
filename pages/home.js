@@ -9,7 +9,6 @@ export default function Home({ tweets }) {
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const router = useRouter();
-  console.log(tweets);
   if (loading) {
     return null;
   }
@@ -32,7 +31,6 @@ export default function Home({ tweets }) {
 export async function getServerSideProps() {
   let tweets = await getTweets(prisma);
   tweets = JSON.parse(JSON.stringify(tweets));
-  console.log(tweets);
   return {
     props: {
       tweets,

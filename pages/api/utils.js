@@ -4,7 +4,6 @@ import { getSession } from "next-auth/react";
 
 export default async function handler(req, res) {
   const session = await getSession({ req });
-  console.log(req.body.task);
 
   if (req.method !== "POST") {
     return res.end();
@@ -52,9 +51,7 @@ export default async function handler(req, res) {
     });
   }
 
-  console.log("in here");
   if (req.body.task === "generate_one_tweet") {
-    console.log("I dont get here");
     const users = await prisma.user.findMany({});
 
     const randomIndex = Math.floor(Math.random() * users.length);
