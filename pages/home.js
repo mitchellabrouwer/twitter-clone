@@ -29,7 +29,7 @@ export default function Home({ tweets }) {
   );
 }
 export async function getServerSideProps() {
-  let tweets = await getTweets(prisma);
+  let tweets = await getTweets(prisma, 2);
   tweets = JSON.parse(JSON.stringify(tweets));
   return {
     props: {
