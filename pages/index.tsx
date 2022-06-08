@@ -1,8 +1,8 @@
-import Tweets from "components/tweets";
-import { getTweets } from "lib/data";
-import prisma from "lib/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Tweets from "../components/Tweets";
+import { getTweets } from "../lib/data";
+import prisma from "../lib/prisma";
 
 export default function Index({ tweets }) {
   const { data: session, status } = useSession();
@@ -18,7 +18,7 @@ export default function Index({ tweets }) {
 
   return (
     <div className="mt-10">
-      <Tweets tweets={tweets.slice(0, 3)} />
+      <Tweets tweets={tweets.slice(0, 3)} noLink={false} />
       <p className="text-center p-4 border m-4">
         <h2 className="mb-10">Join the conversation!</h2>
         <a
@@ -34,7 +34,7 @@ export default function Index({ tweets }) {
 
 export async function getServerSideProps() {
   const take = 3;
-  let tweets = await getTweets(prisma, take);
+  let tweets = await getTweets(prisma, take, 0);
   tweets = JSON.parse(JSON.stringify(tweets));
 
   return {

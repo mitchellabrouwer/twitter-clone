@@ -24,7 +24,7 @@ export default function NewReply({ tweet }) {
           },
           method: "POST",
         });
-        router.reload(window.location.pathname);
+        router.reload();
       }}
     >
       <textarea

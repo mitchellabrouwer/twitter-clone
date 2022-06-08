@@ -1,5 +1,5 @@
-import prisma from "lib/prisma";
 import { getSession } from "next-auth/react";
+import prisma from "../../lib/prisma";
 
 export default async function handler(req, res) {
   if (req.method !== "POST" && req.method !== "DELETE") {
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   });
 
   if (req.method === "POST") {
-    await prisma.tweet.create({
+    const tweet = await prisma.tweet.create({
       data: {
         content: req.body.content,
         parent: req.body.parent || null,
@@ -24,7 +24,17 @@ export default async function handler(req, res) {
         },
       },
     });
-    res.end();
+
+    const tweetWithAuthorData = await prisma.tweet.findUnique({
+      where: {
+        id: tweet.id,
+      },
+      include: {
+        author: true,
+      },
+    });
+
+    res.json(tweetWithAuthorData);
     return;
   }
 

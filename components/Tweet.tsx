@@ -1,6 +1,10 @@
-import timeago from "lib/timeago";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
 import Image from "next/image";
 import Link from "next/link";
+
+TimeAgo.addDefaultLocale(en);
+const timeAgo = new TimeAgo("en-US");
 
 const Tweet = ({ tweet, noLink }) => {
   return (
@@ -29,12 +33,12 @@ const Tweet = ({ tweet, noLink }) => {
                   </a>
                 </Link>
                 {noLink ? (
-                  <span>{` ${timeago.format(new Date(tweet.createdAt))}`}</span>
+                  <span>{` ${timeAgo.format(new Date(tweet.createdAt))}`}</span>
                 ) : (
                   <span className="pl-1 text-sm font-light leading-5 color-dimmed">
                     <Link href={`/${tweet.author.name}/status/${tweet.id}`}>
                       <a className="hover:underline">
-                        {timeago.format(new Date(tweet.createdAt))}
+                        {timeAgo.format(new Date(tweet.createdAt))}
                       </a>
                     </Link>
                   </span>

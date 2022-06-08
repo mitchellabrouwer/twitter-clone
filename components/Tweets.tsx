@@ -1,4 +1,4 @@
-import Tweet from "components/Tweet";
+import Tweet from "./Tweet";
 
 export default function Tweets({ tweets, noLink }) {
   if (!tweets) {

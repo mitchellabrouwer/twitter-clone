@@ -1,7 +1,8 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
-export default function NewTweet() {
+
+export default function NewTweet({ tweets, setTweets }) {
   const [content, setContent] = useState("");
   const { data: session } = useSession();
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function NewTweet() {
           return;
         }
 
-        await fetch("/api/tweet", {
+        const res = await fetch("/api/tweet", {
           body: JSON.stringify({
             content,
           }),
@@ -28,7 +29,9 @@ export default function NewTweet() {
           method: "POST",
         });
 
-        router.reload(window.location.pathname);
+        const tweet = await res.json();
+        setTweets([tweet, ...tweets]);
+        // router.reload(window.location.pathname);
       }}
     >
       <div className="flex">
@@ -46,7 +49,7 @@ export default function NewTweet() {
 
       <div className="flex">
         <div className="flex-1 mb-5">
-          <button className="border float-right px-8 py-2 mt-0 mr-2 font-bold rounded-full">
+          <button className="border float-right px-8 py-2 mt-0 mr-2 font-bold rounded-full text-sky-400">
             Tweet
           </button>
         </div>

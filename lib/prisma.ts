@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-let global = {};
+let global = {} as any;
 
 const prisma = global.prisma || new PrismaClient();
 
