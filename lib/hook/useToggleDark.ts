@@ -2,8 +2,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { getFromStorage, setToStorage } from "../utils";
 
 export default function useToggleDark(): [string, Dispatch<SetStateAction<string>>] {
-  console.log(getFromStorage("theme"));
-
   const [dark, setDark] = useState(getFromStorage("theme") || "light");
 
   useEffect(() => {

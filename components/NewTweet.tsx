@@ -35,9 +35,9 @@ export default function NewTweet({ tweets, setTweets }) {
       }}
     >
       <div className="flex">
-        <div className="flex-1 px-1 pt-2 mt-2 mr-1 ml-1">
+        <div className="mt-2 mr-1 ml-1 flex-1 px-1 pt-2">
           <textarea
-            className="border p-4 w-full text-lg font-medium bg-transparent outline-none color-primary "
+            className="color-primary w-full border bg-transparent p-4 text-lg font-medium outline-none "
             rows={2}
             cols={50}
             placeholder="What's happening?"
@@ -47,9 +47,9 @@ export default function NewTweet({ tweets, setTweets }) {
         </div>
       </div>
 
-      <div className="flex">
-        <div className="flex-1 mb-5">
-          <button className="border float-right px-8 py-2 mt-0 mr-2 font-bold rounded-full text-sky-400">
+      <div className="flex border-b-8">
+        <div className="mb-5 flex-1">
+          <button className="float-right mt-0 mr-2 rounded-full border px-8 py-2 font-bold text-sky-400">
             Tweet
           </button>
         </div>

@@ -34,7 +34,7 @@ export default function Index({ tweets }) {
 
 export async function getServerSideProps() {
   const take = 3;
-  let tweets = await getTweets(prisma, take, 0);
+  let tweets = await getTweets(prisma, take);
   tweets = JSON.parse(JSON.stringify(tweets));
 
   return {

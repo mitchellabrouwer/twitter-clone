@@ -10,12 +10,12 @@ const Tweet = ({ tweet, noLink }) => {
   return (
     <div className="mb-4">
       <div className="flex flex-shrink-0 p-4 pb-0">
-        <div className="flex-shrink-0 block group">
+        <div className="group block flex-shrink-0">
           <div className="flex items-center">
             <div>
               {tweet.author.image && (
                 <Image
-                  className="w-64 h-64 rounded-full"
+                  className="h-64 w-64 rounded-full"
                   src={tweet.author.image}
                   alt=""
                   width="40"
@@ -27,7 +27,7 @@ const Tweet = ({ tweet, noLink }) => {
               <p className="">
                 <Link href={`/${tweet.author.name}`}>
                   <a>
-                    <span className="text-base font-medium leading-6 color-primary hover:underline">
+                    <span className="color-primary text-base font-medium leading-6 hover:underline">
                       {tweet.author.name}
                     </span>
                   </a>
@@ -35,7 +35,7 @@ const Tweet = ({ tweet, noLink }) => {
                 {noLink ? (
                   <span>{` ${timeAgo.format(new Date(tweet.createdAt))}`}</span>
                 ) : (
-                  <span className="pl-1 text-sm font-light leading-5 color-dimmed">
+                  <span className="color-dimmed pl-1 text-sm font-light leading-5">
                     <Link href={`/${tweet.author.name}/status/${tweet.id}`}>
                       <a className="hover:underline">
                         {timeAgo.format(new Date(tweet.createdAt))}
@@ -48,8 +48,8 @@ const Tweet = ({ tweet, noLink }) => {
           </div>
         </div>
       </div>
-      <div className="pl-16 -mt-6">
-        <p className="flex-shrink pl-1 pr-2 text-base font-normal color-primary width-auto">
+      <div className="-mt-6 pl-16">
+        <p className="color-primary width-auto flex-shrink pl-1 pr-2 text-base font-normal">
           {tweet.content}
         </p>
       </div>

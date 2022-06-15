@@ -1,10 +1,10 @@
-import NewReply from "components/NewReply";
-import Tweet from "components/Tweet";
-import Tweets from "components/Tweets";
-import { getReplies, getTweet } from "lib/data.js";
-import prisma from "lib/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import NewReply from "../../../components/NewReply";
+import Tweet from "../../../components/Tweet";
+import Tweets from "../../../components/Tweets";
+import { getReplies, getTweet } from "../../../lib/data";
+import prisma from "../../../lib/prisma";
 
 export default function SingleTweet({ tweet, replies }) {
   const { data: session, status } = useSession();
@@ -19,12 +19,12 @@ export default function SingleTweet({ tweet, replies }) {
 
   return (
     <div>
-      <Tweet tweet={tweet} />;
+      <Tweet tweet={tweet} noLink={false} />;
       {session && session.user.email === tweet.author.email && (
-        <div className="flex-1 py-2em-2 text-center">
+        <div className="py-2em-2 flex-1 text-center">
           <a
             href="#"
-            className="flex items-center w-12 px-3 py-2 mt-1 text-base font-medium leading-6 text-gray-500 rounded-full group hover:bg-color-accent-hover hover:color-accent-hover"
+            className="hover:bg-color-accent-hover hover:color-accent-hover group mt-1 flex w-12 items-center rounded-full px-3 py-2 text-base font-medium leading-6 text-gray-500"
             onClick={async () => {
               const res = await fetch("/api/tweet", {
                 body: JSON.stringify({
@@ -49,7 +49,7 @@ export default function SingleTweet({ tweet, replies }) {
         </div>
       )}
       <NewReply tweet={tweet} />
-      <Tweets tweets={replies} noLink={true}></Tweets>
+      <Tweets tweets={replies} noLink={true} />
     </div>
   );
 }
@@ -60,6 +60,9 @@ export async function getServerSideProps({ params }) {
 
   let replies = await getReplies(params.id, prisma);
   replies = JSON.parse(JSON.stringify(replies));
+
+  console.log(tweet);
+  console.log(replies);
 
   return {
     props: {

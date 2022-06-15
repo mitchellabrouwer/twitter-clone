@@ -1,7 +1,7 @@
 // this file is loaded server side
 // import prisma into the component page
 
-export const getTweets = async (prisma, take, cursor) => {
+export const getTweets = async (prisma, take, cursor?) => {
   return await prisma.tweet.findMany({
     where: {
       parent: null,
@@ -67,3 +67,5 @@ export const getReplies = async (id, prisma) => {
 
   return tweets;
 };
+
+export const getRepliesCount = async () => {};

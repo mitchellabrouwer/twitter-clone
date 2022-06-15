@@ -26,11 +26,15 @@ export default function Home({ initialTweets }) {
   }
 
   return (
-    <div className="dark:bg-black dark:text-gray-200 h-full">
+    <div className="h-full border-gray-800 dark:bg-black dark:text-gray-200 md:grid md:grid-cols-4">
       <Nav />
-      <NewTweet tweets={tweets} setTweets={setTweets} />
-      <Tweets tweets={tweets} noLink="false" />
-      <LoadMore tweets={tweets} setTweets={setTweets} />
+      <div className="col-span-2 h-full border-x-2 border-gray-200">
+        <h2 className="border-b-2 p-3 text-lg font-semibold">Home</h2>
+        <NewTweet tweets={tweets} setTweets={setTweets} />
+        <Tweets tweets={tweets} noLink="false" />
+        <LoadMore tweets={tweets} setTweets={setTweets} />
+      </div>
+      <h2 className="border-b-2 p-3 text-lg font-semibold">Trends for you...</h2>
     </div>
   );
 }
