@@ -1,8 +1,32 @@
 // this file is loaded server side
-// import prisma into the component page
+import { PrismaClient, Tweet, User } from "@prisma/client";
+import _cloneDeep from "lodash.clonedeep";
+import prisma from "./prisma";
 
-export const getTweets = async (prisma, take, cursor?) => {
-  return await prisma.tweet.findMany({
+const withRepliesCount = async (tweets: (Tweet & { author: User })[]) => {
+  const ids = tweets.reduce((accumulator, tweet) => [...accumulator, tweet.id], []);
+
+  const repliesArray = await prisma.tweet.groupBy({
+    by: ["parent"],
+    where: {
+      parent: { in: ids },
+    },
+    _count: {
+      _all: true,
+    },
+  });
+
+  const repliesById = repliesArray.reduce((accumulator, current) => {
+    return { ...accumulator, [current.parent]: current._count._all };
+  }, {});
+
+  return tweets.map((tweet) => {
+    return { ..._cloneDeep(tweet), replies: repliesById[tweet.id] || 0 };
+  });
+};
+
+export const getTweets = async (prisma: PrismaClient, take: number, cursor?) => {
+  const tweets = await prisma.tweet.findMany({
     where: {
       parent: null,
     },
@@ -18,6 +42,16 @@ export const getTweets = async (prisma, take, cursor?) => {
     cursor,
     skip: cursor ? 1 : 0,
   });
+
+  const tweetsRaw = await prisma.$queryRaw/*sql*/ `
+    SELECT * FROM "Tweet"
+    LEFT JOIN "User" ON "User"."id"="Tweet"."authorId"
+    INNER JOIN (SELECT "Tweet"."parent" AS "replyId", COUNT(*) FROM "Tweet" GROUP BY parent) replies
+    ON "replies"."replyId" = "Tweet"."id";
+  `;
+  console.log(tweetsRaw);
+
+  return withRepliesCount(tweets);
 };
 
 export const getTweet = async (id, prisma) => {
@@ -67,5 +101,3 @@ export const getReplies = async (id, prisma) => {
 
   return tweets;
 };
-
-export const getRepliesCount = async () => {};

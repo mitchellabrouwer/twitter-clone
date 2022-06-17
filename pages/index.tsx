@@ -19,10 +19,10 @@ export default function Index({ tweets }) {
   return (
     <div className="mt-10">
       <Tweets tweets={tweets.slice(0, 3)} noLink={false} />
-      <p className="text-center p-4 border m-4">
+      <p className="m-4 border p-4 text-center">
         <h2 className="mb-10">Join the conversation!</h2>
         <a
-          className="border px-8 py-2 mt-5 font-bold rounded-full color-accent-contrast bg-color-accent hover:bg-color-accent-hover-darker"
+          className="color-accent-contrast bg-color-accent hover:bg-color-accent-hover-darker mt-5 rounded-full border px-8 py-2 font-bold"
           href="/api/auth/signin"
         >
           login
