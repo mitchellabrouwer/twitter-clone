@@ -1,29 +1,27 @@
 // this file is loaded server side
-import { PrismaClient, Tweet, User } from "@prisma/client";
-import _cloneDeep from "lodash.clonedeep";
-import prisma from "./prisma";
+import { PrismaClient } from "@prisma/client";
 
-const withRepliesCount = async (tweets: (Tweet & { author: User })[]) => {
-  const ids = tweets.reduce((accumulator, tweet) => [...accumulator, tweet.id], []);
+// const withRepliesCount = async (tweets: (Tweet & { author: User })[]) => {
+//   const ids = tweets.reduce((accumulator, tweet) => [...accumulator, tweet.id], []);
 
-  const repliesArray = await prisma.tweet.groupBy({
-    by: ["parent"],
-    where: {
-      parent: { in: ids },
-    },
-    _count: {
-      _all: true,
-    },
-  });
+//   const repliesArray = await prisma.tweet.groupBy({
+//     by: ["parent"],
+//     where: {
+//       parent: { in: ids },
+//     },
+//     _count: {
+//       _all: true,
+//     },
+//   });
 
-  const repliesById = repliesArray.reduce((accumulator, current) => {
-    return { ...accumulator, [current.parent]: current._count._all };
-  }, {});
+//   const repliesById = repliesArray.reduce((accumulator, current) => {
+//     return { ...accumulator, [current.parent]: current._count._all };
+//   }, {});
 
-  return tweets.map((tweet) => {
-    return { ..._cloneDeep(tweet), replies: repliesById[tweet.id] || 0 };
-  });
-};
+//   return tweets.map((tweet) => {
+//     return { ..._cloneDeep(tweet), replies: repliesById[tweet.id] || 0 };
+//   });
+// };
 
 export const getTweets = async (prisma: PrismaClient, take: number, cursor?) => {
   const tweets = await prisma.tweet.findMany({
@@ -46,12 +44,13 @@ export const getTweets = async (prisma: PrismaClient, take: number, cursor?) => 
   const tweetsRaw = await prisma.$queryRaw/*sql*/ `
     SELECT * FROM "Tweet"
     LEFT JOIN "User" ON "User"."id"="Tweet"."authorId"
-    INNER JOIN (SELECT "Tweet"."parent" AS "replyId", COUNT(*) FROM "Tweet" GROUP BY parent) replies
+    LEFT JOIN (SELECT "Tweet"."parent" AS "replyId", COUNT(*) AS "replyCount" FROM "Tweet" GROUP BY parent) replies
     ON "replies"."replyId" = "Tweet"."id";
+    -- Add likes count
   `;
   console.log(tweetsRaw);
 
-  return withRepliesCount(tweets);
+  // return withRepliesCount(tweets);
 };
 
 export const getTweet = async (id, prisma) => {

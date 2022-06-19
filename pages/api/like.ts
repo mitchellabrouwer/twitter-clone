@@ -2,7 +2,7 @@ import { getSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
 
 export default async function handler(req, res) {
-  if (req.method !== "GET") {
+  if (req.method !== "PUT") {
     return res.status(501).end();
   }
 
@@ -14,19 +14,31 @@ export default async function handler(req, res) {
     },
   });
 
-  const tweetId = req.body.tweetId;
-  const isLiked = await prisma.like.findFirst({
-    where: {
-      tweetId,
-      userId: user.id,
-    },
-  });
+  if (req.method === "PUT") {
+    const tweet = await prisma.like.findFirst({
+      where: {
+        tweetId: req.body.tweetId,
+        userId: user.id,
+      },
+    });
 
-  if (req.method === "GET") {
-  }
+    let response;
 
-  if (req.method === "POST") {
-    console.log(tweetId);
-    console.log(isLiked);
+    if (tweet) {
+      response = await prisma.like.delete({
+        where: {
+          id: tweet.id,
+        },
+      });
+      return res.send({ response: response.tweetId, liked: false });
+    } else {
+      response = await prisma.like.create({
+        data: {
+          tweetId: req.body.tweetId,
+          userId: user.id,
+        },
+      });
+      return res.send({ response: response.tweetId, liked: true });
+    }
   }
 }

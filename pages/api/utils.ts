@@ -67,5 +67,21 @@ export default async function handler(req, res) {
     });
   }
 
+  if (req.body.task === "generate_one_like") {
+    const users = await prisma.user.findMany({});
+    const tweets = await prisma.tweet.findMany({});
+
+    const randomIndex = Math.floor(Math.random() * users.length);
+    const userId = users[randomIndex].id;
+    const tweetId = tweets[randomIndex].id;
+
+    await prisma.like.create({
+      data: {
+        userId,
+        tweetId,
+      },
+    });
+  }
+
   res.end();
 }

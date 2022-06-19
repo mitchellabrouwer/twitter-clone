@@ -24,7 +24,7 @@ const Tweet = ({ tweet, noLink }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      method: "POST",
+      method: "PUT",
     });
     console.log(res);
   }
