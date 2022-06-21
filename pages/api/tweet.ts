@@ -15,15 +15,31 @@ export default async function handler(req, res) {
   });
 
   if (req.method === "POST") {
-    const tweet = await prisma.tweet.create({
-      data: {
-        content: req.body.content,
-        parent: req.body.parent || null,
-        author: {
-          connect: { id: user.id },
+    let tweet;
+
+    console.log(req.body);
+    console.log(req.body.parent);
+
+    if (req.body.parent) {
+      tweet = await prisma.reply.create({
+        data: {
+          content: req.body.content,
+          parent: req.body.parent || null,
+          author: {
+            connect: { id: user.id },
+          },
         },
-      },
-    });
+      });
+    } else {
+      tweet = await prisma.tweet.create({
+        data: {
+          content: req.body.content,
+          author: {
+            connect: { id: user.id },
+          },
+        },
+      });
+    }
 
     const tweetWithAuthorData = await prisma.tweet.findUnique({
       where: {
