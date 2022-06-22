@@ -2,7 +2,7 @@ interface LoadMoreProps {
   tweets: any;
   setTweets: any;
   // take: number;
-  user: string;
+  user?: string;
 }
 
 export default function LoadMore({ tweets, setTweets, user }: LoadMoreProps) {

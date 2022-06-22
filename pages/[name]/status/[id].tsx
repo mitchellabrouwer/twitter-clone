@@ -14,6 +14,8 @@ export default function SingleTweet({ tweet, replies }) {
   // any router code in the client-side, not on the server-side.
 
   if (typeof window !== "undefined" && tweet.parent) {
+    console.log(tweet);
+
     router.push(`/${tweet.author.name}/status/${tweet.parent}`);
   }
 
@@ -60,9 +62,6 @@ export async function getServerSideProps({ params }) {
 
   let replies = await getReplies(params.id, prisma);
   replies = JSON.parse(JSON.stringify(replies));
-
-  console.log(tweet);
-  console.log(replies);
 
   return {
     props: {

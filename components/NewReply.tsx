@@ -7,7 +7,7 @@ export default function NewReply({ tweet }) {
 
   return (
     <form
-      className="flex ml-2"
+      className="ml-2 flex"
       onSubmit={async (e) => {
         e.preventDefault();
         if (!reply) {
@@ -28,15 +28,15 @@ export default function NewReply({ tweet }) {
       }}
     >
       <textarea
-        className="border p-4 w-full text-lg font-medium bg-transparent outline-none color-primary "
+        className="color-primary w-full border bg-transparent p-4 text-lg font-medium outline-none "
         rows={1}
         cols={50}
         placeholder="Tweet your reply"
         onChange={(e) => setReply(e.target.value)}
       />
       <div className="flex">
-        <div className="flex-1 mb-5">
-          <button className="border float-right ml-2 px-8 py-2 mt-0 mr-8 font-bold rounded-full color-accent-contrast bg-color-accent hover:bg-color-accent-hover">
+        <div className="mb-5 flex-1">
+          <button className="color-accent-contrast bg-color-accent hover:bg-color-accent-hover float-right ml-2 mt-0 mr-8 rounded-full border px-8 py-2 font-bold">
             Reply
           </button>
         </div>

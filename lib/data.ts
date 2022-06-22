@@ -66,10 +66,6 @@ export const getTweets = async (prisma: PrismaClient, take: number, cursor?) => 
     skip: cursor ? 1 : 0,
   });
 
-  // console.log(tweets);
-
-  // const tweetsRaw = await prisma.$queryRaw(tweetQuery);
-
   return tweets;
 };
 
@@ -110,8 +106,6 @@ export const getUserTweets = async (
     cursor,
     skip: cursor ? 1 : 0,
   });
-
-  console.log(tweets);
 
   return tweets;
 };

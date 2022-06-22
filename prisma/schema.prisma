@@ -78,12 +78,11 @@ model Reply {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   content   String?
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
 
   parent   Tweet @relation(fields: [parentId], references: [id])
   parentId Int
-
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId String
 
   likes Like[]
 }

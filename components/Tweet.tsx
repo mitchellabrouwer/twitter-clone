@@ -17,11 +17,9 @@ const Tweet = ({ tweet, noLink }) => {
   const [isLiked, setIsLiked] = useState(null);
 
   renderNumber += 1;
-  console.log(renderNumber);
 
   useEffect(() => {}, []);
   async function toggleLike(tweetId) {
-    console.log(tweetId);
     const res = await fetch("/api/like", {
       body: JSON.stringify({
         tweetId,
@@ -31,14 +29,7 @@ const Tweet = ({ tweet, noLink }) => {
       },
       method: "PUT",
     });
-    console.log(res);
   }
-  console.log(
-    tweet.author.image ||
-      "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/273.jpg"
-  );
-  console.log(tweet);
-  console.log(tweet._count);
   return (
     <div className="mb-4">
       <div className="flex flex-shrink-0 p-4 pb-0">
