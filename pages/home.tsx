@@ -41,6 +41,7 @@ export default function Home({ initialTweets }) {
 export async function getServerSideProps() {
   let tweets = await getTweets(prisma, 2, undefined);
   tweets = JSON.parse(JSON.stringify(tweets));
+
   return {
     props: {
       initialTweets: tweets,

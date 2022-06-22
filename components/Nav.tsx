@@ -14,7 +14,6 @@ export default function Nav() {
     { name: "notifications", icon: <AiFillBell /> },
     { name: "messages", icon: <AiFillMail /> },
     { name: "bookmarks", icon: <BsFillBookmarkFill /> },
-    { name: "theme", icon: <ToggleDark /> },
   ];
 
   return (
@@ -31,6 +30,9 @@ export default function Nav() {
         {menu.map((item) => (
           <NavLink name={item.name} icon={item.icon} />
         ))}
+        <li className="list-none p-2">
+          <ToggleDark />
+        </li>
       </nav>
     </div>
   );

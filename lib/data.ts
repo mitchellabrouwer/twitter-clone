@@ -58,6 +58,7 @@ export const getTweets = async (prisma: PrismaClient, take: number, cursor?) => 
     include: {
       author: true,
       likes: true,
+      replies: true,
       _count: true,
     },
     take,
@@ -72,7 +73,7 @@ export const getTweets = async (prisma: PrismaClient, take: number, cursor?) => 
   return tweets;
 };
 
-export const getTweet = async (id, prisma) => {
+export const getTweet = async (id, prisma: PrismaClient) => {
   const tweet = await prisma.tweet.findUnique({
     where: { id: parseInt(id) },
     include: { author: true },
@@ -81,7 +82,12 @@ export const getTweet = async (id, prisma) => {
   return tweet;
 };
 
-export const getUserTweets = async (name, prisma) => {
+export const getUserTweets = async (
+  name,
+  prisma: PrismaClient,
+  take: number,
+  cursor?
+) => {
   const tweets = await prisma.tweet.findMany({
     where: {
       author: {
@@ -96,9 +102,13 @@ export const getUserTweets = async (name, prisma) => {
     include: {
       author: true,
       likes: true,
-      // replies: true,
+      replies: true,
       _count: true,
     },
+
+    take,
+    cursor,
+    skip: cursor ? 1 : 0,
   });
 
   console.log(tweets);
@@ -106,7 +116,7 @@ export const getUserTweets = async (name, prisma) => {
   return tweets;
 };
 
-export const getReplies = async (id, prisma) => {
+export const getReplies = async (id, prisma: PrismaClient) => {
   const tweets = await prisma.reply.findMany({
     where: {
       parentId: parseInt(id),
@@ -122,4 +132,14 @@ export const getReplies = async (id, prisma) => {
   });
 
   return tweets;
+};
+
+export const isUser = async (name, prisma: PrismaClient) => {
+  const user = await prisma.user.findFirst({
+    where: {
+      name,
+    },
+  });
+
+  return !!user;
 };

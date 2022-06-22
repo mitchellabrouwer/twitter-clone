@@ -11,8 +11,13 @@ import { FaRegComment } from "react-icons/fa";
 TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
+var renderNumber = 0;
+
 const Tweet = ({ tweet, noLink }) => {
   const [isLiked, setIsLiked] = useState(null);
+
+  renderNumber += 1;
+  console.log(renderNumber);
 
   useEffect(() => {}, []);
   async function toggleLike(tweetId) {
@@ -28,22 +33,28 @@ const Tweet = ({ tweet, noLink }) => {
     });
     console.log(res);
   }
-
+  console.log(
+    tweet.author.image ||
+      "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/273.jpg"
+  );
+  console.log(tweet);
+  console.log(tweet._count);
   return (
     <div className="mb-4">
       <div className="flex flex-shrink-0 p-4 pb-0">
         <div className="group block flex-shrink-0">
           <div className="flex items-center">
             <div>
-              {tweet.author.image && (
-                <Image
-                  className="h-64 w-64 rounded-full"
-                  src={tweet.author.image}
-                  alt=""
-                  width="40"
-                  height="40"
-                />
-              )}
+              <Image
+                className="h-64 w-64 rounded-full"
+                src={
+                  tweet.author.image ||
+                  "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/273.jpg"
+                }
+                alt=""
+                width="40"
+                height="40"
+              />
             </div>
             <div className="ml-3 -mt-6">
               <p className="">
@@ -79,15 +90,21 @@ const Tweet = ({ tweet, noLink }) => {
         <div className="flex items-center">
           <FaRegComment size="15" color="grey" />
           <span className="mb-1 select-none p-0.5 text-gray-400">
-            <small>{tweet.replies}</small>
+            <small>{tweet?._count?.replies || 0}</small>
           </span>
         </div>
         <AiOutlineRetweet size="20" color="grey" />
-        <AiOutlineHeart
-          className="hover:cursor-pointer"
-          color="grey"
-          onClick={() => toggleLike(tweet.id)}
-        />
+        <div className="flex items-center">
+          <AiOutlineHeart
+            className="hover:cursor-pointer"
+            color="grey"
+            onClick={() => toggleLike(tweet.id)}
+          />
+          <span className="mb-1 select-none p-0.5 text-gray-400">
+            <small>{tweet?._count?.likes || 0}</small>
+          </span>
+        </div>
+
         <BsUpload color="grey" />
       </div>
     </div>
