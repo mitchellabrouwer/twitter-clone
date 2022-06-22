@@ -14,17 +14,17 @@ export default async function handler(req, res) {
     },
   });
 
+  console.log("TYPEOF!!!", typeof req.body.parent);
   if (req.method === "POST") {
     let tweet;
-
-    console.log(req.body);
-    console.log(req.body.parent);
 
     if (req.body.parent) {
       tweet = await prisma.reply.create({
         data: {
           content: req.body.content,
-          parent: req.body.parent || null,
+          parent: {
+            connect: { id: req.body.parent },
+          },
           author: {
             connect: { id: user.id },
           },
