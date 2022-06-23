@@ -21,7 +21,7 @@ export default function SingleTweet({ tweet, replies }) {
 
   return (
     <div>
-      <Tweet tweet={tweet} noLink={false} />;
+      <Tweet tweet={tweet} authorLink={true} tweetLink={true} />
       {session && session.user.email === tweet.author.email && (
         <div className="py-2em-2 flex-1 text-center">
           <a
@@ -51,7 +51,9 @@ export default function SingleTweet({ tweet, replies }) {
         </div>
       )}
       <NewReply tweet={tweet} />
-      <Tweets tweets={replies} noLink={true} />
+      {session && session.user.email === tweet.author.email && (
+        <Tweets tweets={replies} authorLink={true} tweetLink={true} />
+      )}
     </div>
   );
 }

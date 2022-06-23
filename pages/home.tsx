@@ -31,7 +31,7 @@ export default function Home({ initialTweets }) {
       <div className="col-span-2 h-full border-x-2 border-gray-200">
         <h2 className="border-b-2 p-3 text-lg font-semibold">Home</h2>
         <NewTweet tweets={tweets} setTweets={setTweets} />
-        <Tweets tweets={tweets} noLink="false" />
+        <Tweets tweets={tweets} authorLink={true} tweetLink={true} />
         <LoadMore tweets={tweets} setTweets={setTweets} />
       </div>
       <h2 className="border-b-2 p-3 text-lg font-semibold">Trends for you...</h2>

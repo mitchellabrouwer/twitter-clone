@@ -18,7 +18,11 @@ export default function Index({ tweets }) {
 
   return (
     <div className="mt-10">
-      <Tweets tweets={tweets.slice(0, 3)} noLink={false} />
+      <Tweets
+        tweets={tweets.slice(0, 3)}
+        authorLink={!!session?.user}
+        tweetLink={!!session?.user}
+      />
       <p className="m-4 border p-4 text-center">
         <h2 className="mb-10">Join the conversation!</h2>
         <a

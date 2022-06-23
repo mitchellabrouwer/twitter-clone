@@ -12,7 +12,7 @@ export default function NewReply({ tweet }) {
         e.preventDefault();
         if (!reply) {
           alert("Enter some text in the reply");
-          return;
+          return; 
         }
         const res = await fetch("/api/tweet", {
           body: JSON.stringify({

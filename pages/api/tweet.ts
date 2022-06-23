@@ -14,7 +14,6 @@ export default async function handler(req, res) {
     },
   });
 
-  console.log("TYPEOF!!!", typeof req.body.parent);
   if (req.method === "POST") {
     let tweet;
 
@@ -57,24 +56,37 @@ export default async function handler(req, res) {
   if (req.method === "DELETE") {
     const id = req.body.id;
 
-    const tweet = await prisma.tweet.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        author: true,
-      },
-    });
+    console.log(req.body.id);
+    if (req.body.parent) {
+      const reply = await prisma.reply.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          author: true,
+        },
+      });
+      console.log(reply);
+      if (reply.author.id !== user.id) return res.status(401).end();
 
-    if (tweet.author.id !== user.id) {
-      res.status(401).end();
-      return;
+      await prisma.reply.delete({ where: { id } });
+
+      return res.status(200).end();
+    } else {
+      const tweet = await prisma.tweet.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          author: true,
+        },
+      });
+
+      if (tweet.author.id !== user.id) return res.status(401).end();
+
+      await prisma.tweet.delete({ where: { id } });
+
+      return res.status(200).end();
     }
-
-    await prisma.tweet.delete({
-      where: { id },
-    });
-    res.status(200).end();
-    return;
   }
 }
