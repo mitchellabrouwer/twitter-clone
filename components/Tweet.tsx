@@ -29,6 +29,7 @@ const Tweet = ({ tweet, authorLink, tweetLink }) => {
       },
       method: "PUT",
     });
+    router.reload();
   }
   return (
     <div className="mb-4">
